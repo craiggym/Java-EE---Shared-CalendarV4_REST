@@ -35,4 +35,21 @@ public class UserService {
             return null;
         }
     }
+
+    public User addUser(User user){
+        try{
+            if (!userDao.userExists(user.getUsername())) { //User doesn't exist. Proceed with user add
+                user.setUserID(userDao.countUsers() + 1); // From POST, server handles the ID
+                userDao.insertUser(user);
+                return user;
+            }
+            else {
+                user.setUserID(-1); // Return user with error id
+                return user;
+            }
+        }catch(NullPointerException nullpointer){
+            nullpointer.printStackTrace();
+            return null;
+        }
+    }
 }

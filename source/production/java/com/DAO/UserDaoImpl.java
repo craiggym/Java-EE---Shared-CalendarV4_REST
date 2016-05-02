@@ -89,8 +89,9 @@ public class UserDaoImpl implements UserDao{
     public int countUsers() {
         try {
             String query = "SELECT COUNT(*) FROM User";
-            int res = (int) jdbcTemplate.queryForObject(query, int.class);
             JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+            int res = (int) jdbcTemplate.queryForObject(query, int.class);
+
             return res;
         }
         catch(Exception e){

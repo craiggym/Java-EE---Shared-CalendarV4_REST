@@ -21,12 +21,10 @@ public class EventResource {
     public List<Event> getAllEvents(@Context UriInfo uriInfo) {
         List<Event> events =eventService.getAllEvents();
         for(Event e:events){
-            String uri = uriInfo.getBaseUriBuilder()
-                    .path(EventResource.class)
-                    .path(Long.toString(e.getId()))
-                    .build()
-                    .toString();
+            String uri = getURI(uriInfo, Long.toString(e.getId()));
+            String uriUser = getURIUser(uriInfo, e.getUsername());
             e.addLink(uri, "self");
+            e.addLink(uriUser, "user");
         }
         return events;
     }
@@ -38,13 +36,28 @@ public class EventResource {
         Event event = null;
         event = eventService.getEvent(eventID);
 
+        String uri = getURI(uriInfo, eventID);
+        String uriUser = getURIUser(uriInfo, event.getUsername());
+        event.addLink(uri, "self");
+        event.addLink(uriUser, "user");
+
+        return event;
+    }
+
+    public String getURI(UriInfo uriInfo, String eventID){
         String uri = uriInfo.getBaseUriBuilder()
                 .path(EventResource.class)
                 .path(eventID)
                 .build()
                 .toString();
-        event.addLink(uri, "self");
-
-        return event;
+        return uri;
+    }
+    public String getURIUser(UriInfo uriInfo, String author){
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(UserResource.class)
+                .path(author)
+                .build()
+                .toString();
+        return uri;
     }
 }
