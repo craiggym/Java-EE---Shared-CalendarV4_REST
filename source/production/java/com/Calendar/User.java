@@ -1,8 +1,9 @@
 package com.Calendar;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class User {
-
-
     private String username;
     private String e_mail;
     private String password;
@@ -11,6 +12,16 @@ public class User {
     private String last_name;
     private int userID;
 
+    public User(int userID, String username, String e_mail, String password, String first_name, String last_name){
+        this.userID = userID;
+        this.username = username;
+        this.e_mail = e_mail;
+        this.password = password;
+        this.first_name = first_name;
+        this.last_name = last_name;
+    }
+
+    public User(){};
     public void setUserID(int userID) {
         this.userID = userID;
     }

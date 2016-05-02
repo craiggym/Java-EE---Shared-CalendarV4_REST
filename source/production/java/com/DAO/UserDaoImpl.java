@@ -3,6 +3,7 @@ package com.DAO;
 import com.Calendar.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao{
     // class variables //
@@ -98,6 +99,11 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    @Override
+    public User selectUser(String username) {
+        return null;
+    }
+
     /*****************************************************************************************
      * isAuthCorrect
      * Authenticates using two strings passed in parameters
@@ -123,18 +129,27 @@ public class UserDaoImpl implements UserDao{
     }
 
     // Select statements //
+
     /*****************************************************************************************
-     * selectFirstName
-     * Selects the user's first name
+     * selectUser
+     * Selects and returns all attributes of the user given by the username parameter
      * @param username
-     * @return
+     * @return User
+     ****************************************************************************************/
+ //   public User selectUser(String username){
+
+   // }
+
+    /*****************************************************************************************
+     * selectAllUsers
+     * Selects and returns all users and their attributes
+     * @return List<User>
      ****************************************************************************************/
     @Override
-    public String selectFirstName(String username) {
-        String query = "SELECT first_name FROM User WHERE username=?";
-        Object[] input = new Object[] {username};
+    public List<User> selectAllUsers(){
+        String query = "SELECT DISTINCT userID, username, e_mail, password, first_name, last_name FROM User ORDER BY userID ASC";
         jdbcTemplate = new JdbcTemplate(dataSource);
-        String fname = (String)jdbcTemplate.queryForObject(query, input, String.class);
-        return fname;
+        List<User> users = jdbcTemplate.query(query, new UserMapper());
+        return users;
     }
 }

@@ -15,7 +15,8 @@ public class Event{
     private String eventAuthor;
     private String month,day,year;
 
-    public Event(){};
+    public Event(){}
+
     public Event(Integer id, String name, Date date, String desc, String uname, String author) {
         this.id = id;
         this.eventName = name;
