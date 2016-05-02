@@ -1,6 +1,8 @@
 package com.Calendar;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement
 public class User {
@@ -11,6 +13,7 @@ public class User {
     private String first_name;
     private String last_name;
     private int userID;
+    private List<Link> links = new ArrayList<>();
 
     public User(int userID, String username, String e_mail, String password, String first_name, String last_name){
         this.userID = userID;
@@ -76,6 +79,22 @@ public class User {
 
     public int getUserID() {
         return userID;
+    }
+
+
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
+    }
+
+    public void addLink(String link, String rel){
+        Link newLink = new Link();
+        newLink.setLink(link);
+        newLink.setRel(rel);
+        links.add(newLink);
     }
 
 }

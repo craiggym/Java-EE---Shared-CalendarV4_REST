@@ -2,7 +2,9 @@ package com.Calendar;
 
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by BHARATH on 2/26/2016.
@@ -16,6 +18,7 @@ public class Event{
     private String username;
     private String eventAuthor;
     private String month,day,year;
+    private List<Link> links = new ArrayList<>();
 
     public Event(){}
 
@@ -98,5 +101,18 @@ public class Event{
 
     public void setYear(String year) { this.year = year;  }
 
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
+    }
+    public void addLink(String url, String rel){
+        Link link = new Link();
+        link.setLink(url);
+        link.setRel(rel);
+        links.add(link);
+    }
 
 }
