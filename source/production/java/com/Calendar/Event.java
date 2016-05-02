@@ -1,11 +1,13 @@
 package com.Calendar;
 
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 /**
  * Created by BHARATH on 2/26/2016.
  */
+@XmlRootElement
 public class Event{
     private Integer id;
     private String eventName;

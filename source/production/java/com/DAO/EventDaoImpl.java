@@ -156,6 +156,14 @@ public class EventDaoImpl implements EventDao{
     }
 
     @Override
+    public List<Event> selectAllEventsUnsorted() {
+        String query = "SELECT DISTINCT EventID, EventName, EventDate, EventDesc, EventUser, EventCreator FROM Event WHERE EventUser=EventCreator ORDER BY EventID ASC";
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Event> events = jdbcTemplate.query(query, new EventMapper());
+        return events;
+    }
+
+    @Override
     public Event getEventById(int id) {
         String query = "select EventID, EventName, EventDate, EventDesc, EventUser, EventCreator from Event where EventID=" + id + " limit 1";
         jdbcTemplate = new JdbcTemplate(dataSource);
