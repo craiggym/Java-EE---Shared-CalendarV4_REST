@@ -1,9 +1,6 @@
 package com.Calendar;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -20,10 +17,13 @@ public class UserResource {
         return userService.getAllUsers();
     }
 
-    @POST
+    @Path("/{username}")
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String showUsersPOST(){
-        return "You posted";
+    public User getUser(@PathParam("username") String username){
+        User user = null;
+        user = userService.getUser(username);
+        return user;
     }
 
 

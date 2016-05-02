@@ -11,11 +11,10 @@ import java.util.List;
  */
 public class UserService {
     private static ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("AppContext.xml");
-
+    private static UserDao userDao = (UserDao) context.getBean("userDao");
     public List<User> getAllUsers(){
         try {
             List<User> users = new ArrayList<User>();
-            UserDao userDao = (UserDao) context.getBean("userDao");
             users = userDao.selectAllUsers();
 
             return users;
@@ -24,5 +23,16 @@ public class UserService {
             nullpointer.printStackTrace();
             return null;
         }
-    };
+    }
+
+    public User getUser(String username){
+        try{
+            User user = userDao.selectUser(username);
+            return user;
+        }
+        catch(NullPointerException nullpointer){
+            nullpointer.printStackTrace();
+            return null;
+        }
+    }
 }

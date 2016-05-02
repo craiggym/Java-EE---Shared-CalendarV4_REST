@@ -11,6 +11,7 @@ public class UserDaoImpl implements UserDao{
     private JdbcTemplate jdbcTemplate;
     boolean debug = true;
 
+
     // methods //
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -25,7 +26,7 @@ public class UserDaoImpl implements UserDao{
     public void createUserTable() {
         String query = "CREATE TABLE User(userID int, username VARCHAR(255), e_mail VARCHAR(255), password VARCHAR(255), " +
                 "first_name VARCHAR(255), last_name VARCHAR(255));";
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.execute(query);
     }
 
@@ -36,7 +37,7 @@ public class UserDaoImpl implements UserDao{
     @Override
     public void dropUserTable() {
         String query = "DROP TABLE User;";
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.execute(query);
     }
 
@@ -48,7 +49,7 @@ public class UserDaoImpl implements UserDao{
     @Override
     public void insertUser(User user) {
         String query = "insert into User (userID, username, e_mail, password, first_name, last_name) values (?,?,?,?,?,?)";
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         Object[] inputs = new Object[] {user.getUserID(), user.getUsername(),user.getE_mail(), user.getPassword(), user.getFirst_name(), user.getLast_name()};
         jdbcTemplate.update(query,inputs); // 'update' allows for non-static queries whereas execute wouldn't (e.g. '?')
         if(debug) System.out.printf("User: %s added with password: %s", user.getUsername(), user.getPassword());
@@ -65,7 +66,7 @@ public class UserDaoImpl implements UserDao{
         try {
             String query = "SELECT username FROM User WHERE username=?";
             Object[] input = new Object[]{username};
-            jdbcTemplate = new JdbcTemplate(dataSource);
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
             String uname = (String) jdbcTemplate.queryForObject(query, input, String.class);
 
             if(debug) {
@@ -88,20 +89,14 @@ public class UserDaoImpl implements UserDao{
     public int countUsers() {
         try {
             String query = "SELECT COUNT(*) FROM User";
-            jdbcTemplate = new JdbcTemplate(dataSource);
             int res = (int) jdbcTemplate.queryForObject(query, int.class);
-
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
             return res;
         }
         catch(Exception e){
             if (debug) System.out.println("error querying for count");
             return 0;
         }
-    }
-
-    @Override
-    public User selectUser(String username) {
-        return null;
     }
 
     /*****************************************************************************************
@@ -116,7 +111,7 @@ public class UserDaoImpl implements UserDao{
         try {
             String query = "SELECT username FROM User WHERE username=?" + " AND password=?";
             Object[] input = new Object[]{username,password};
-            jdbcTemplate = new JdbcTemplate(dataSource);
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
             String q_result = (String) jdbcTemplate.queryForObject(query, input, String.class);
 
             if(debug)System.out.println("Authentication for " + username + " correct!(result="+q_result +")");
@@ -136,9 +131,15 @@ public class UserDaoImpl implements UserDao{
      * @param username
      * @return User
      ****************************************************************************************/
- //   public User selectUser(String username){
+    @Override
+    public User selectUser(String username){
+        String query = "SELECT * FROM User WHERE username = ?";
+        Object[] input =  new Object[]{username};
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        User user = (User) jdbcTemplate.queryForObject(query, input, new UserMapper());
+        return user;
 
-   // }
+    }
 
     /*****************************************************************************************
      * selectAllUsers
@@ -148,7 +149,7 @@ public class UserDaoImpl implements UserDao{
     @Override
     public List<User> selectAllUsers(){
         String query = "SELECT DISTINCT userID, username, e_mail, password, first_name, last_name FROM User ORDER BY userID ASC";
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         List<User> users = jdbcTemplate.query(query, new UserMapper());
         return users;
     }
