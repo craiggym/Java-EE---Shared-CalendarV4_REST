@@ -1,5 +1,6 @@
 package com.Calendar;
 
+import com.DAO.EventDao;
 import com.DAO.UserDao;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -12,6 +13,8 @@ import java.util.List;
 public class UserService {
     private static ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("AppContext.xml");
     private static UserDao userDao = (UserDao) context.getBean("userDao");
+    private static EventDao eventDao = (EventDao) context.getBean("eventDao");
+
     public List<User> getAllUsers(){
         try {
             List<User> users = new ArrayList<User>();
@@ -24,6 +27,20 @@ public class UserService {
             return null;
         }
     }
+
+    /*
+    public List<Event> getUserLikedEvents(String username){
+        try {
+            List<Event> events = new ArrayList<Event>();
+            events = eventDao.selectLikedEvents(username);
+
+            return events;
+        }
+        catch(NullPointerException nullpointer){
+            nullpointer.printStackTrace();
+            return null;
+        }
+    }*/
 
     public User getUser(String username){
         try{

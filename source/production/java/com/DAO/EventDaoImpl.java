@@ -173,4 +173,12 @@ public class EventDaoImpl implements EventDao{
         }
         return null;
     }
+
+    @Override
+    public List<Event> selectLikedEvents(String username) {
+        String query = "SELECT DISTINCT EventID, EventName, EventDate, EventDesc, EventUser, EventCreator FROM Event WHERE EventUser <> EventCreator AND EventUser = \'"+username+"\' ORDER BY EventDate ASC";
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Event> events = jdbcTemplate.query(query, new EventMapper());
+        return events;
+    }
 }
