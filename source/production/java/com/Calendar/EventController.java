@@ -63,16 +63,8 @@ public class EventController {
         EventDao eventDao = (EventDao) context.getBean("eventDao");
         try {
             Event eventSelected = eventDao.getEventById(id);
-            /*
-            int eventID = event.get(id).getId();
-            String eventName = event.get(id).getEventName();
-            Date eventDate = event.get(id).getEventDate();
-            String eventDescription = event.get(id).getEventDescription();
-            String author = event.get(id).getEventAuthor();
-            */
             Event createdNewEvent = new Event(eventSelected.getId(), eventSelected.getEventName(), eventSelected.getEventDate(), eventSelected.getEventDescription(), username, eventSelected.getEventAuthor()); // Create event object
-
-
+            
             // User doesn't have event, proceed with steps
             if(!eventDao.hasEvent(createdNewEvent.getEventName(), username, createdNewEvent.getEventAuthor())) {
                 eventDao.insertEvent(createdNewEvent);

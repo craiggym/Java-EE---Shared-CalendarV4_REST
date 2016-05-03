@@ -15,6 +15,11 @@ public class UserService {
     private static UserDao userDao = (UserDao) context.getBean("userDao");
     private static EventDao eventDao = (EventDao) context.getBean("eventDao");
 
+
+    /******************************************************************************************************************
+     *Method: getAllUsers
+     * Description: Returns a list of all the users in the database
+     *****************************************************************************************************************/
     public List<User> getAllUsers(){
         try {
             List<User> users = new ArrayList<User>();
@@ -28,7 +33,10 @@ public class UserService {
         }
     }
 
-
+    /******************************************************************************************************************
+     *Method: getUser
+     * Description: Returns a user given by the parameter 'user'
+     *****************************************************************************************************************/
     public User getUser(String username){
         try{
             User user = userDao.selectUser(username);
@@ -40,6 +48,10 @@ public class UserService {
         }
     }
 
+    /******************************************************************************************************************
+     *Method: getURI
+     * Description: Returns the URI for the Links attribute
+     *****************************************************************************************************************/
     public User addUser(User user){
         try{
             if (!userDao.userExists(user.getUsername())) { //User doesn't exist. Proceed with user add

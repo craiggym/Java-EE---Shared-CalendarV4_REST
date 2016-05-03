@@ -10,10 +10,19 @@ import java.util.List;
 /**
  * Created by craig on 4/27/16.
  */
+
+/******************************************************************************************************************
+ *Class: EventResource
+ * Description: Handles all methods relating to the event resource
+ *****************************************************************************************************************/
 @Path("/events")
 public class EventResource {
     EventService eventService = new EventService();
 
+    /******************************************************************************************************************
+     *Method: getAllEvents
+     * Description: Returns a JSON list of all events in the database.
+     *****************************************************************************************************************/
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Event> getAllEvents(@Context UriInfo uriInfo) {
@@ -27,6 +36,10 @@ public class EventResource {
         return events;
     }
 
+    /******************************************************************************************************************
+     *Method: addEvent
+     * Description: Adds an event with POST using the parameters passed from the JSON body.
+     *****************************************************************************************************************/
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -38,6 +51,36 @@ public class EventResource {
         return event;
     }
 
+    /******************************************************************************************************************
+     *Method: editEvent
+     * Description: Edits an event with PUT using the parameters passed from the JSON body.
+     *****************************************************************************************************************/
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Event editEvent(Event event){
+        User user = new UserService().getUser(event.getUsername());
+        Event editEvent = eventService.editEvent(event, user);
+
+        if (event.getId() == -1) throw new WebApplicationException(Response.Status.CONFLICT); // event duplication
+        return event;
+    }
+
+    /******************************************************************************************************************
+     *Method: deleteEvent
+     * Description: Deletes and event with DELETE
+     *****************************************************************************************************************/
+    @Path("/{eventID}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public void deleteEvent(@PathParam("eventID") String eventID){
+        eventService.deleteEvent(eventID);
+    }
+
+    /******************************************************************************************************************
+     *Method: getEvent
+     * Description: Uses the eventID to return a specific event.
+     *****************************************************************************************************************/
     @Path("/{eventID}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,6 +96,10 @@ public class EventResource {
         return event;
     }
 
+    /******************************************************************************************************************
+     *Method: getURI
+     * Description: Cleaner way to handle the redundancy of generating the URI for each link
+     *****************************************************************************************************************/
     public String getURI(UriInfo uriInfo, String eventID){
         String uri = uriInfo.getBaseUriBuilder()
                 .path(EventResource.class)

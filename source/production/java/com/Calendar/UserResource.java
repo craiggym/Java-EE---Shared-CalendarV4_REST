@@ -15,6 +15,10 @@ import java.util.List;
 public class UserResource {
     UserService userService = new UserService();
 
+    /******************************************************************************************************************
+     *Method: getAllUsers
+     * Description: Returns a list of all the users in the database
+     *****************************************************************************************************************/
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> getAllUsers(@Context UriInfo uriInfo){
@@ -29,6 +33,10 @@ public class UserResource {
         return user;
     }
 
+    /******************************************************************************************************************
+     *Method: addUser
+     * Description: Adds a user
+     *****************************************************************************************************************/
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -38,6 +46,10 @@ public class UserResource {
         return addUser;
     }
 
+    /******************************************************************************************************************
+     *Method: getUser
+     * Description: Uses the username parameter to return a particular user.
+     *****************************************************************************************************************/
     @Path("/{username}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,13 +65,10 @@ public class UserResource {
         return user;
     }
 
-    /******************************************************************************
-     * getURI
-     * Puts the link information and the relation
-     * @param uriInfo
-     * @param id
-     * @return
-     *****************************************************************************/
+    /******************************************************************************************************************
+     *Method: getURI
+     * Description: Returns the URI for the Links attribute
+     *****************************************************************************************************************/
     public String getURI(UriInfo uriInfo, String id){
         String uri = uriInfo.getBaseUriBuilder()
                 .path(UserResource.class) // http.../Shared_Calendar/rest
@@ -69,6 +78,10 @@ public class UserResource {
         return uri;
     }
 
+    /******************************************************************************************************************
+     *Method: getURIForLike
+     * Description: Returns the URI for the Links attribute pertaining to the Liked links
+     *****************************************************************************************************************/
     public String getURIForLike(UriInfo uriInfo, String id){
         String uri = uriInfo.getBaseUriBuilder()
                 .path(UserResource.class) // http.../Shared_Calendar/rest
