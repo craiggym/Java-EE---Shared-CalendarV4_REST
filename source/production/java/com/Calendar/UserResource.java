@@ -53,22 +53,6 @@ public class UserResource {
         return user;
     }
 
-/*
-    @Path("/{username}/likedEvents")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Event> getLikedEvents(@PathParam("username") String username, @Context UriInfo uriInfo){
-        List<Event> likedEvents = new ArrayList<Event>();
-        likedEvents = userService.getUserLikedEvents(username);
-        User user = userService.getUser(username);
-        for(Event e: likedEvents){
-            String uri = getURI(uriInfo, username);
-            user.addLink(uri, "self");
-        }
-        return likedEvents;
-    }
-*/
-
     /******************************************************************************
      * getURI
      * Puts the link information and the relation

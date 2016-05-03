@@ -28,19 +28,6 @@ public class UserService {
         }
     }
 
-    /*
-    public List<Event> getUserLikedEvents(String username){
-        try {
-            List<Event> events = new ArrayList<Event>();
-            events = eventDao.selectLikedEvents(username);
-
-            return events;
-        }
-        catch(NullPointerException nullpointer){
-            nullpointer.printStackTrace();
-            return null;
-        }
-    }*/
 
     public User getUser(String username){
         try{

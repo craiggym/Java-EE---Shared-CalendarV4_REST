@@ -37,4 +37,21 @@ public class EventService {
             return null;
         }
     }
+
+    public Event addEvent(Event event, User user){
+        try{
+            if (!eventDao.hasEvent(event.getEventName(), user.getUsername(), event.getEventAuthor())){ //User doesn't exist. Proceed with user add
+                event.setId(eventDao.countEvents() + 1);
+                eventDao.insertEvent(event);
+                return event;
+            }
+            else {
+                event.setId(-1); // Return user with error id
+                return event;
+            }
+        }catch(NullPointerException nullpointer){
+            nullpointer.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -1,11 +1,9 @@
 package com.Calendar;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
@@ -27,6 +25,17 @@ public class EventResource {
             e.addLink(uriUser, "user");
         }
         return events;
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Event addEvent(Event event){
+        User user = new UserService().getUser(event.getUsername());
+        Event addEvent = eventService.addEvent(event, user);
+
+        if (event.getId() == -1) throw new WebApplicationException(Response.Status.CONFLICT); // event duplication
+        return event;
     }
 
     @Path("/{eventID}")
