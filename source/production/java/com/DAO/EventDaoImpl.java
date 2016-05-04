@@ -266,4 +266,16 @@ public class EventDaoImpl implements EventDao{
         Object[] inputs = new Object[] {eventID};
         jdbcTemplate.update(query,inputs); // 'update' allows for non-static queries whereas execute wouldn't (e.g. '?')
     }
+
+    /****************************************************************************************************************************************
+     * Title: deleteLikedEvent
+     * Description: Deletes the event from the database
+     ****************************************************************************************************************************************/
+    @Override
+    public void deleteLikedEvent(String eventID) {
+        String query = "DELETE FROM Event WHERE EventID=? AND EventUser != EventCreator;";
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        Object[] inputs = new Object[] {eventID};
+        jdbcTemplate.update(query,inputs); // 'update' allows for non-static queries whereas execute wouldn't (e.g. '?')
+    }
 }

@@ -20,4 +20,5 @@ public interface EventDao {
     Event getEventById(int id);
     void editEvent(Event event);
     void deleteEvent(String eventID);
+    void deleteLikedEvent(String eventID);
 }

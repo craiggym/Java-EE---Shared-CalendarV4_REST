@@ -3,6 +3,8 @@ package com.Calendar;
 import com.DAO.EventDao;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,4 +27,20 @@ public class LikeService {
             return null;
         }
     }
+
+    /************************************************************************************************************************************
+     *Method: deleteEvent
+     * Description: Deletes the event specified from the path
+     ************************************************************************************************************************************/
+    public void deleteLikedEvent(String eventID){
+        try{
+            Event event = eventDao.getEventById(Integer.parseInt(eventID));
+            if (event.getEventAuthor() == event.getUsername()) throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            eventDao.deleteLikedEvent(eventID);
+        }catch(NullPointerException nullpointer){
+            nullpointer.printStackTrace();
+        }
+    }
+
+
 }
