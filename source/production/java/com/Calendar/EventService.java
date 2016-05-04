@@ -63,7 +63,7 @@ public class EventService {
                 return event;
             }
 
-            if (!eventDao.hasEvent(event.getEventName(), user.getUsername(), event.getEventAuthor())){ //User doesn't exist. Proceed with user add
+            else if (!eventDao.hasEvent(event.getEventName(), user.getUsername(), event.getEventAuthor())){ //Event doesn't exist. Proceed with user add
                 event.setId(eventDao.countEvents() + 1);
                 eventDao.insertEvent(event);
                 return event;
