@@ -37,8 +37,8 @@ public class LikeResource {
     @Path("/{eventID}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public void deleteLikedEvent(@PathParam("eventID") String eventID){
-        likeService.deleteLikedEvent(eventID);
+    public void deleteLikedEvent(@PathParam("username") String username, @PathParam("eventID") String eventID){
+        likeService.deleteLikedEvent(username, eventID);
     }
 
     public String getURIForLike(UriInfo uriInfo, String id){

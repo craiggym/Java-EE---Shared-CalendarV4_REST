@@ -32,10 +32,10 @@ public class LikeService {
      *Method: deleteEvent
      * Description: Deletes the event specified from the path
      ************************************************************************************************************************************/
-    public void deleteLikedEvent(String eventID){
+    public void deleteLikedEvent(String username,String eventID){
         try{
             Event event = eventDao.getEventById(Integer.parseInt(eventID));
-            if (event.getEventAuthor() == event.getUsername()) throw new WebApplicationException(Response.Status.BAD_REQUEST);
+            if (event.getEventAuthor() == username) throw new WebApplicationException(Response.Status.BAD_REQUEST);
             eventDao.deleteLikedEvent(eventID);
         }catch(NullPointerException nullpointer){
             nullpointer.printStackTrace();
