@@ -12,5 +12,8 @@ public interface UserDao {
     User selectUser(String username);
     List<User> selectAllUsers();
     boolean userExists(String username);
+	boolean userExistsMod(String userID);
     boolean isAuthCorrect(String username, String password);
+	void deleteUser(String userID);
+    void editUser(User user);
 }

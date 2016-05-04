@@ -43,7 +43,8 @@ public class UserResource {
     public User addUser(User user){
         User addUser = userService.addUser(user);
         if (addUser.getUserID() == -1) throw new WebApplicationException(Response.Status.CONFLICT); // user duplication
-        return addUser;
+        else if (addUser.getUserID() == -2) throw new WebApplicationException(Response.Status.BAD_REQUEST); // required params not there
+        else return addUser;
     }
 
     /******************************************************************************************************************
@@ -63,6 +64,30 @@ public class UserResource {
         user.addLink(uriLiked, "likedEvents");
 
         return user;
+    }
+
+	 /******************************************************************************************************************
+     *Method: editUser
+     * Description: Edits a user with PUT using the parameters passed from the JSON body.
+     *****************************************************************************************************************/
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public User editUser(User user){
+        User editUser = userService.editUser(user);
+        if (editUser.getUserID() == -2) throw new WebApplicationException(Response.Status.BAD_REQUEST); // required params not there
+        return editUser;
+    }
+
+    /******************************************************************************************************************
+     *Method: deleteUser
+     * Description: Deletes and event with DELETE
+     *****************************************************************************************************************/
+    @Path("/{username}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public void deleteEvent(@PathParam("username") String username){
+        userService.deleteUser(username);
     }
 
     /******************************************************************************************************************

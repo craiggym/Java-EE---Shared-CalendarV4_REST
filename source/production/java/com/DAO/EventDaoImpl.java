@@ -248,9 +248,9 @@ public class EventDaoImpl implements EventDao{
      ****************************************************************************************************************************************/
     @Override
     public void editEvent(Event event) {
-        String query = "UPDATE Event SET EventName=?, EventDate=?, EventDesc=? WHERE EventID=?;";
+        String query = "UPDATE Event SET EventName=?, EventDate=?, EventDesc=?, EventUser=?, EventCreator=? WHERE EventID=?;";
         jdbcTemplate = new JdbcTemplate(dataSource);
-        Object[] inputs = new Object[] {event.getEventName(), event.getEventDate(), event.getEventDescription(), event.getId()};
+        Object[] inputs = new Object[] {event.getEventName(), event.getEventDate(), event.getEventDescription(), event.getUsername(), event.getEventAuthor(), event.getId()};
         jdbcTemplate.update(query,inputs); // 'update' allows for non-static queries whereas execute wouldn't (e.g. '?')
         if(debug) System.out.printf("Updated event with name: %s and with user: %s and author: %s", event.getEventName(), event.getUsername(), event.getEventAuthor());
     }

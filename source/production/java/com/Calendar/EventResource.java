@@ -48,7 +48,8 @@ public class EventResource {
         Event addEvent = eventService.addEvent(event, user);
 
         if (event.getId() == -1) throw new WebApplicationException(Response.Status.CONFLICT); // event duplication
-        return event;
+        else if (event.getId() == -2) throw new WebApplicationException(Response.Status.BAD_REQUEST); // Parameters
+        else return event;
     }
 
     /******************************************************************************************************************
@@ -62,7 +63,7 @@ public class EventResource {
         User user = new UserService().getUser(event.getUsername());
         Event editEvent = eventService.editEvent(event, user);
 
-        if (event.getId() == -1) throw new WebApplicationException(Response.Status.CONFLICT); // event duplication
+        if (event.getId() == -2) throw new WebApplicationException(Response.Status.BAD_REQUEST); // Parameters
         return event;
     }
 

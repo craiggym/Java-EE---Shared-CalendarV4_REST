@@ -57,6 +57,12 @@ public class EventService {
      *****************************************************************************************************************/
     public Event addEvent(Event event, User user){
         try{
+            if(event.getEventName() == null || event.getEventDate() == null || user.getUsername() == null ||
+                    event.getEventAuthor() == null){
+                event.setId(-2); // bad request
+                return event;
+            }
+
             if (!eventDao.hasEvent(event.getEventName(), user.getUsername(), event.getEventAuthor())){ //User doesn't exist. Proceed with user add
                 event.setId(eventDao.countEvents() + 1);
                 eventDao.insertEvent(event);
@@ -74,26 +80,18 @@ public class EventService {
 
     /************************************************************************************************************************************
      *Method: editEvent
-     * Description: Edits the event from the event table. Can only modify events which were
-     * created by the user (i.e. cannot modify a liked event). Only the event title, description, and date can be modified. References
-     * the eventID.
+     * Description: Edits the event from the event table. 
      ************************************************************************************************************************************/
     public Event editEvent(Event event, User user){
         String username = user.getUsername();
+        String idToString = Long.toString(event.getId());
         try{
-            String idToString = Long.toString(event.getId());
-            if(username != event.getEventAuthor()){ // Modified event must have same username and author //
-                event.setId(-1);
-                return event;
-            }
-
-            if (eventDao.hasEventMod(idToString, username, event.getEventAuthor())){ // Proceed if event exists first
+            if (eventDao.hasEventMod(idToString, username, event.getEventAuthor())){ // Proceed if event exists first. Uses the ID as reference.
                 eventDao.editEvent(event);
                 return event;
             }
-            else {
-                event.setId(-1); // Return user with error id if user does not own the event or if it doesn't exist
-                return event;
+            else {// Act as POST if not exist
+                return addEvent(event, user);
             }
         }catch(NullPointerException nullpointer){
             nullpointer.printStackTrace();

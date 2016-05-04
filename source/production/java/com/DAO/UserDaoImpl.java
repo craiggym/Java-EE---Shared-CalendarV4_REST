@@ -80,6 +80,28 @@ public class UserDaoImpl implements UserDao{
             return false;
         }
     }
+	
+	 /*****************************************************************************************
+     * userExistsMod
+     * @param userID
+     * @return true if the user exists in the database. Uses the userID as the unique identifier.
+     ****************************************************************************************/
+    @Override
+    public boolean userExistsMod(String userID) {
+        try {
+            String query = "SELECT username FROM User WHERE UserID=?";
+            Object[] input = new Object[]{userID};
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+            String uname = (String) jdbcTemplate.queryForObject(query, input, String.class);
+
+            return true;
+        }
+        catch(Exception e){
+            if (debug) System.out.println("User does not exist or Error in Checking userExists(userID)");
+            return false;
+        }
+    }
+	
     // count update//
     /*****************************************************************************************
      * countUser
@@ -153,5 +175,30 @@ public class UserDaoImpl implements UserDao{
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         List<User> users = jdbcTemplate.query(query, new UserMapper());
         return users;
+    }
+	
+	 /****************************************************************************************************************************************
+     * Title: editUser
+     * Description: Edits a user from the database.
+     ****************************************************************************************************************************************/
+    @Override
+    public void editUser(User user) {
+        String query = "UPDATE User SET username=?, e_mail=?, password=?, first_name=?, last_name=? WHERE UserID=?;";
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        Object[] inputs = new Object[] {user.getUsername(), user.getE_mail(), user.getPassword(), user.getFirst_name(), user.getLast_name(), user.getUserID()};
+        jdbcTemplate.update(query,inputs); // 'update' allows for non-static queries whereas execute wouldn't (e.g. '?')
+        if(debug) System.out.printf("Updated user successfully");
+    }
+
+    /****************************************************************************************************************************************
+     * Title: deleteUser
+     * Description: Deletes the user from the database
+     ****************************************************************************************************************************************/
+    @Override
+    public void deleteUser(String userID) {
+        String query = "DELETE FROM User WHERE UserID=?;";
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        Object[] inputs = new Object[] {userID};
+        jdbcTemplate.update(query,inputs); // 'update' allows for non-static queries whereas execute wouldn't (e.g. '?')
     }
 }
